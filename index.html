@@ -1,0 +1,90 @@
+!<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1000 Color Generator</title>
+    <style>
+        .color-box {
+        width: 100px;
+        height: 100px;
+        display: inline-block;
+        margin: 10px;
+        text-align: center;
+        border: 1px solid black;
+        position: relative;
+      }
+      .color-box h3 {
+        position: absolute;
+        bottom: 0;
+        padding: 5px;
+        background-color: rgba(255, 255, 255, 0.7);
+        width: 100%;
+      }
+      .copy-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: white;
+        border: 1px solid black;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+      .generate-btn {
+        padding: 10px 20px;
+        margin: 10px 0;
+        cursor: pointer;
+      }
+    </style>
+</head>
+<body>
+    <button class="generate-btn">Generate Random Colors</button>
+    <div id="colorContainer"></div>
+    <script>
+        const colorContainer = document.getElementById("colorContainer");
+      const generateBtn = document.querySelector(".generate-btn");
+
+      function generateColor() {
+        let letters = "0123456789ABCDEF";
+        let color = "#";
+        for (let i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
+
+      function createColorBoxes(num) {
+        colorContainer.innerHTML = "";
+        for (let i = 0; i < num; i++) {
+          let color = generateColor();
+          let colorBox = document.createElement("div");
+          colorBox.classList.add("color-box");
+          colorBox.style.backgroundColor = color;
+          let colorCode = document.createElement("h3");
+          colorCode.textContent = color;
+          let copyBtn = document.createElement("button");
+          copyBtn.classList.add("copy-btn");
+          copyBtn.textContent = "Copy";
+          copyBtn.addEventListener("click", () => {
+            navigator.clipboard.writeText(color).then(
+              function () {
+                alert("Color copied to clipboard: " + color);
+              },
+              function (err) {
+                console.error("Failed to copy text: ", err);
+              }
+            );
+          });
+          colorBox.appendChild(colorCode);
+          colorBox.appendChild(copyBtn);
+          colorContainer.appendChild(colorBox);
+        }
+      }
+      generateBtn.addEventListener("click", () => {
+        createColorBoxes(1000);
+      });
+      createColorBoxes(1000);
+    </script>
+</body>
+</html>
